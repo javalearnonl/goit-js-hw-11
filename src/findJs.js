@@ -11,32 +11,32 @@ export default class ImageFinder {
   }
 
   async fetchImages() {
+    let data;
     try {
-      const imagesSet = await axios
-        .get(
-          `${BASE_URL}?key=${KEY}&q=${this.searchQuery}&image_type=photo&orientation=horizontal&safesearch=true&page=${this.page}&per_page=40`,
-        )
-        .then(response => {
-          const data = response.data;
-
-          if (data.hits.length === 0) {
-            this.notifyIncorrectQuery();
-          }
-          if (this.page * 40 >= data.totalHits && data.hits.length !== 0) {
-            this.notifyEndOfGallery();
-          }
-          if (this.page === 1 && data.totalHits !== 0) {
-            this.showAmountOfHits(data.totalHits);
-          }
-
-          this.incrementPage();
-          return data;
-        });
-      return imagesSet;
+      const response = await axios.get(
+        `${BASE_URL}?key=${KEY}&q=${this.searchQuery}&image_type=photo&orientation=horizontal&safesearch=true&page=${this.page}&per_page=40`
+      );
+      data = response.data;
     } catch (error) {
       this.notifyQueryError(error);
       console.log(error);
+      return null;
     }
+
+    if (data.hits.length === 0) {
+      this.notifyIncorrectQuery();
+    }
+
+    if (this.page * 40 >= data.totalHits && data.hits.length !== 0) {
+      this.notifyEndOfGallery();
+    }
+
+    if (this.page === 1 && data.totalHits !== 0) {
+      this.showAmountOfHits(data.totalHits);
+    }
+
+    this.incrementPage();
+    return data;
   }
 
   resetPage() {
@@ -52,14 +52,17 @@ export default class ImageFinder {
       'Sorry, there are no images matching your search query. Please try again.',
       {
         position: 'right-top',
-      },
+      }
     );
   }
 
   notifyEndOfGallery() {
-    Notiflix.Notify.info("We're sorry, but you've reached the end of search results.", {
-      position: 'right-top',
-    });
+    Notiflix.Notify.info(
+      "We're sorry, but you've reached the end of search results.",
+      {
+        position: 'right-top',
+      }
+    );
   }
 
   showAmountOfHits(totalHits) {
@@ -73,7 +76,7 @@ export default class ImageFinder {
       `Oops! Something went wrong. You caught the following error: ${error.message}.`,
       {
         position: 'right-top',
-      },
+      }
     );
   }
 }

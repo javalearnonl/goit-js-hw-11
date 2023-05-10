@@ -65,6 +65,17 @@ body {
   justify-content: space-between;
   align-items: start;
 }
+.load-more {
+  background-color: rgb(118, 118, 193);
+  padding: 15px;
+  border: 1px transparent;
+  border-radius: 10px;
+  color: white;
+  transition: ease-out 300ms;
+  margin-top: 20px;
+  margin-left: 50%;
+  margin-bottom: 20px;
+}
 .js-hidden {
   display: none;
 }
