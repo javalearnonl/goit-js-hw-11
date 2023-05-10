@@ -13,7 +13,7 @@
         autocomplete="off"
         placeholder="Search images..."
       />
-      <button type="submit">Search</button>
+      <button type="submit">Find</button>
     </form>
 
     <script type="module" src="./index.js"></script>
